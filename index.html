@@ -3,542 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STOCKBENCH - Evaluating LLMs in Real-World Stock Trading</title>
+    <title>STOCKBENCH - Evaluating LLMs in Realistic Stock Trading</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: #ffffff;
-            color: #1d1d1f;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
         }
-
-        /* Navigation */
-        nav {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #1d1d1f;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #1d1d1f;
-            text-decoration: none;
-            transition: color 0.3s;
-            font-weight: 500;
-        }
-
-        .nav-links a:hover {
-            color: #0071e3;
-        }
-
-        /* Main Content */
+        
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 6rem 2rem 2rem;
+            padding: 20px;
         }
-
-        /* Title Section */
-        .title-section {
+        
+        header {
             text-align: center;
-            padding: 4rem 0;
-            background: rgba(245, 245, 247, 0.5);
-            border-radius: 20px;
-            margin-bottom: 4rem;
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 60px 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 40px;
         }
-
-        .title-section h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            color: #1d1d1f;
-            font-weight: 800;
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #000;
         }
-
-        .title-section .subtitle {
-            font-size: 1.3rem;
-            color: #6e6e73;
-            margin-bottom: 2rem;
-            font-weight: 300;
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            font-weight: 400;
         }
-
-        /* Abstract Section */
-        .abstract-section {
-            background: rgba(245, 245, 247, 0.5);
-            padding: 3rem;
-            border-radius: 15px;
-            margin-bottom: 4rem;
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        
+        .section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
         }
-
-        .abstract-section h2 {
-            color: #1d1d1f;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
+        
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #000;
+            font-weight: 600;
         }
-
-        .abstract-section p {
-            color: #424245;
+        
+        .abstract {
+            font-size: 1em;
             line-height: 1.8;
-            margin-bottom: 1rem;
+            color: #444;
+            text-align: justify;
         }
-
-        /* Workflow Section */
-        .workflow-section {
-            margin-bottom: 4rem;
-            text-align: center;
-        }
-
-        .workflow-section h2 {
-            color: #1d1d1f;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-        }
-
-        .workflow-placeholder {
+        
+        .main-image {
             width: 100%;
-            height: 400px;
-            background: rgba(245, 245, 247, 0.5);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed rgba(0, 113, 227, 0.3);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-
-        .workflow-placeholder p {
-            color: #6e6e73;
-            font-size: 1.1rem;
-        }
-
-        /* Stock Selection Section */
-        .stock-selection-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 4rem;
-            align-items: center;
-        }
-
-        .stock-selection-text {
-            background: rgba(245, 245, 247, 0.5);
-            padding: 2.5rem;
-            border-radius: 15px;
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-
-        .stock-selection-text h2 {
-            color: #1d1d1f;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-        }
-
-        .stock-selection-text p {
-            color: #424245;
-            margin-bottom: 1rem;
-            line-height: 1.8;
-        }
-
-        .stock-selection-text ul {
-            color: #424245;
-            padding-left: 1.5rem;
-            line-height: 1.8;
-        }
-
-        .stock-selection-text li {
-            margin-bottom: 0.5rem;
-        }
-
-        .stock-selection-chart {
-            background: rgba(245, 245, 247, 0.5);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-
-        .chart-placeholder {
-            width: 100%;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px dashed rgba(0, 113, 227, 0.2);
-        }
-
-        /* Leaderboard Section */
-        .leaderboard-section {
-            background: rgba(245, 245, 247, 0.5);
-            padding: 3rem;
-            border-radius: 15px;
-            margin-bottom: 4rem;
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-
-        .leaderboard-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .leaderboard-header h2 {
-            color: #1d1d1f;
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .leaderboard-description {
-            color: #424245;
-            font-size: 1.1rem;
-            line-height: 1.8;
             max-width: 800px;
-            margin: 0 auto;
+            margin: 30px auto;
+            display: block;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
         }
-
-        .highlight-box {
-            background: rgba(0, 113, 227, 0.1);
-            border-left: 4px solid #0071e3;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 5px;
+        
+        .stock-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
-
-        .model-comparison {
+        
+        .stock-card {
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 4px;
+            border-left: 3px solid #333;
+        }
+        
+        .stock-card h4 {
+            margin-bottom: 10px;
+            color: #000;
+        }
+        
+        .stock-card p {
+            color: #555;
+            font-size: 0.95em;
+        }
+        
+        .experiment-setup {
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        
+        .experiment-setup p {
+            color: #444;
+            margin-bottom: 10px;
+        }
+        
+        .experiment-setup strong {
+            color: #000;
+        }
+        
+        .leaderboard {
             overflow-x: auto;
-            margin-top: 2rem;
+            margin-top: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
         }
-
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            background-color: #fff;
         }
-
+        
         th, td {
-            padding: 1rem;
+            padding: 12px 15px;
             text-align: left;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid #e0e0e0;
         }
-
+        
         th {
-            background: rgba(245, 245, 247, 0.8);
-            color: #1d1d1f;
-            font-weight: bold;
+            background-color: #f8f8f8;
+            font-weight: 600;
+            color: #000;
         }
-
+        
         tr:hover {
-            background: rgba(0, 113, 227, 0.05);
+            background-color: #f8f8f8;
         }
-
-        /* Footer */
-        footer {
-            background: rgba(245, 245, 247, 0.8);
-            padding: 3rem 0;
+        
+        .rank-1 { background-color: rgba(255, 215, 0, 0.1); }
+        .rank-2 { background-color: rgba(192, 192, 192, 0.1); }
+        .rank-3 { background-color: rgba(205, 127, 50, 0.1); }
+        
+        .metric {
+            font-weight: 500;
+        }
+        
+        .positive { color: #2e7d32; }
+        .negative { color: #c62828; }
+        
+        .caption {
             text-align: center;
-            color: #6e6e73;
-            border-top: 1px solid rgba(0,0,0,0.05);
+            color: #666;
+            margin-top: 10px;
+            font-size: 0.9em;
         }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-links a {
-            color: #1d1d1f;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: #0071e3;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .title-section h1 {
-                font-size: 2.5rem;
-            }
-            
-            .stock-selection-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .container {
-                padding: 6rem 1rem 2rem;
-            }
+        
+        .note {
+            margin-top: 15px;
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <div class="logo">STOCKBENCH</div>
-            <ul class="nav-links">
-                <li><a href="#abstract">Abstract</a></li>
-                <li><a href="#workflow">Workflow</a></li>
-                <li><a href="#stocks">Stock Selection</a></li>
-                <li><a href="#leaderboard">Leaderboard</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+    <header>
+        <div class="container">
+            <h1>STOCKBENCH</h1>
+            <p class="subtitle">Evaluating LLM Agents in Realistic Stock Trading Environments</p>
         </div>
-    </nav>
+    </header>
 
     <div class="container">
-        <!-- Title Section -->
-        <section class="title-section">
-            <h1>STOCKBENCH</h1>
-            <p class="subtitle">Evaluating LLMs in Real-World Stock Trading</p>
-        </section>
-
         <!-- Abstract Section -->
-        <section id="abstract" class="abstract-section">
+        <section class="section">
             <h2>Abstract</h2>
-            <p>Large language models (LLMs) have recently demonstrated strong capabilities as autonomous agents, showing promise in reasoning, tool use, and sequential decision-making. While prior benchmarks have evaluated LLM agents in domains such as software engineering and scientific discovery, the finance domain remains underexplored, despite its direct relevance to economic value and high-stakes decision-making.</p>
-            <p>Existing financial benchmarks primarily test static knowledge through question answering, but they fall short of capturing the dynamic and iterative nature of trading. To address this gap, we introduce STOCKBENCH, a contamination-free benchmark designed to evaluate LLM agents in realistic, multi-month stock trading environments.</p>
-            <p>Agents receive daily market signals—including prices, fundamentals, and news—and must make sequential buy, sell, or hold decisions. Performance is assessed using financial metrics such as cumulative return, maximum drawdown, and the Sortino ratio.</p>
-            <p>Our evaluation of state-of-the-art proprietary (e.g., GPT-5, Claude-4) and open-weight (e.g., Qwen3, Kimi-K2, GLM-4.5) models shows that while most LLM agents struggle to outperform the simple buy-and-hold baseline, several models demonstrate the potential to deliver higher returns and manage risk more effectively.</p>
-            <p>These findings highlight both the challenges and opportunities in developing LLM-powered financial agents, showing that excelling at static financial knowledge tasks does not necessarily translate into successful trading strategies. We release STOCKBENCH as an open-source resource to support reproducibility and advance future research in this domain.</p>
+            <div class="abstract">
+                <p>Large language models (LLMs) have recently demonstrated strong capabilities as autonomous agents, showing promise in reasoning, tool use, and sequential decision-making. While prior benchmarks have evaluated LLM agents in domains such as software engineering and scientific discovery, the finance domain remains underexplored, despite its direct relevance to economic value and high-stakes decision-making.</p>
+                <p>To address this gap, we introduce STOCKBENCH, a contamination-free benchmark designed to evaluate LLM agents in realistic, multi-month stock trading environments. Agents receive daily market signals—including prices, fundamentals, and news—and must make sequential buy, sell, or hold decisions. Performance is assessed using financial metrics such as cumulative return, maximum drawdown, and the Sortino ratio.</p>
+                <p>Our evaluation of state-of-the-art proprietary and open-weight models shows that while most LLM agents struggle to outperform the simple buy-and-hold baseline, several models demonstrate the potential to deliver higher returns and manage risk more effectively. These findings highlight both the challenges and opportunities in developing LLM-powered financial agents.</p>
+            </div>
         </section>
 
-        <!-- Workflow Section -->
-        <section id="workflow" class="workflow-section">
-            <h2>STOCKBENCH Workflow</h2>
-            <div class="workflow-placeholder">
-                <p>Main workflow diagram placeholder - Add STOCKBENCH workflow image here</p>
-            </div>
+        <!-- Main Figure Section -->
+        <section class="section">
+            <h2>System Overview</h2>
+            <img src="[PLACEHOLDER_FOR_MAIN_FIGURE]" alt="STOCKBENCH System Architecture" class="main-image">
+            <p class="caption">Figure 1: Overview of STOCKBENCH framework, including back-trading environment and stock trading agent workflow</p>
         </section>
 
         <!-- Stock Selection Section -->
-        <section id="stocks" class="stock-selection-section">
-            <div class="stock-selection-text">
-                <h2>Investment Target Selection Strategy</h2>
-                <p>To ensure evaluation stability and representativeness, we carefully selected the 20 highest-weighted stocks from the Dow Jones Industrial Average (DJIA) as investment targets.</p>
-                <p>Selection criteria include:</p>
-                <ul>
-                    <li>Large market capitalization, good liquidity, less susceptible to short-term sentiment</li>
-                    <li>Broad industry distribution covering technology, finance, manufacturing and other sectors</li>
-                    <li>High information transparency, easy access to fundamental and news data</li>
-                    <li>Global market representativeness, reflecting overall economic trends</li>
-                </ul>
-                <p>This curated target strategy ensures evaluation reproducibility while simulating the core assets that real investors focus on.</p>
-            </div>
-            <div class="stock-selection-chart">
-                <h3 style="color: #0071e3; margin-bottom: 1rem;">Industry Distribution</h3>
-                <div class="chart-placeholder">
-                    <p>Stock selection industry distribution chart placeholder</p>
+        <section class="section">
+            <h2>Investment Targets</h2>
+            <p>We select the top 20 stocks from the Dow Jones Industrial Average (DJIA) by weight as our investment targets, ensuring diverse representation across major sectors while avoiding short-term irrational market sentiment.</p>
+            <div class="stock-selection">
+                <div class="stock-card">
+                    <h4>Technology</h4>
+                    <p>Apple (AAPL), Microsoft (MSFT), Salesforce (CRM) - representing the digital economy</p>
                 </div>
+                <div class="stock-card">
+                    <h4>Financial Services</h4>
+                    <p>JPMorgan Chase (JPM), Goldman Sachs (GS), Visa (V) - capturing financial market dynamics</p>
+                </div>
+                <div class="stock-card">
+                    <h4>Manufacturing</h4>
+                    <p>Boeing (BA), Caterpillar (CAT), Honeywell (HON) - reflecting industrial activity</p>
+                </div>
+                <div class="stock-card">
+                    <h4>Consumer Goods</h4>
+                    <p>Coca-Cola (KO), Procter & Gamble (PG), Nike (NKE) - representing consumer demand</p>
+                </div>
+            </div>
+            <img src="[PLACEHOLDER_FOR_STOCK_DISTRIBUTION_FIGURE]" alt="Industry Distribution" class="main-image">
+            <p class="caption">Figure 2: Industry distribution of selected investment targets</p>
+        </section>
+
+        <!-- Experiment Setup Section -->
+        <section class="section">
+            <h2>Experiment Setup</h2>
+            <div class="experiment-setup">
+                <p><strong>Evaluation Period:</strong> March 3 - June 30, 2025 (82 trading days)</p>
+                <p><strong>Initial Capital:</strong> $100,000 cash, zero initial holdings</p>
             </div>
         </section>
 
         <!-- Leaderboard Section -->
-        <section id="leaderboard" class="leaderboard-section">
-            <div class="leaderboard-header">
-                <h2>Model Trading Performance Leaderboard</h2>
-                <p class="leaderboard-description">
-                    The following leaderboard shows the real trading performance of various large language models under the STOCKBENCH evaluation framework. We use three core financial metrics - cumulative return, maximum drawdown, and Sortino ratio - for comprehensive evaluation. All data is based on real market data from March to June 2025, ensuring the reliability and practicality of evaluation results.
-                </p>
-                <div class="highlight-box">
-                    <strong>Key Findings:</strong> Although most models perform well in static financial Q&A tasks, only some models can outperform simple buy-and-hold strategies in dynamic trading environments. This highlights the challenge of translating language understanding capabilities into actual trading decisions.
-                </div>
-            </div>
-            <div class="model-comparison">
+        <section class="section">
+            <h2>Leaderboard</h2>
+            <div class="leaderboard">
                 <table>
                     <thead>
                         <tr>
                             <th>Rank</th>
                             <th>Model</th>
-                            <th>Cumulative Return (%)</th>
-                            <th>Maximum Drawdown (%)</th>
+                            <th>Final Return (%)</th>
+                            <th>Max Drawdown (%)</th>
                             <th>Sortino Ratio</th>
+                            <th>Composite Score</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Kimi-K2</td>
-                            <td style="color: #34D399;">1.9</td>
-                            <td style="color: #F87171;">-11.8</td>
-                            <td>0.0420</td>
+                        <tr class="rank-1">
+                            <td><strong>1</strong></td>
+                            <td><strong>Qwen3-235B-Ins</strong></td>
+                            <td class="metric positive"><strong>+3.2</strong></td>
+                            <td class="metric negative"><strong>-11.2</strong></td>
+                            <td class="metric"><strong>0.285</strong></td>
+                            <td><strong>2.85</strong></td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Qwen3-235B-Ins</td>
-                            <td style="color: #34D399;">2.4</td>
-                            <td style="color: #F87171;">-11.2</td>
-                            <td>0.0299</td>
+                        <tr class="rank-2">
+                            <td><strong>2</strong></td>
+                            <td><strong>Kimi-K2</strong></td>
+                            <td class="metric positive"><strong>+2.8</strong></td>
+                            <td class="metric negative"><strong>-12.5</strong></td>
+                            <td class="metric"><strong>0.264</strong></td>
+                            <td><strong>2.42</strong></td>
                         </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>GLM-4.5</td>
-                            <td style="color: #34D399;">2.3</td>
-                            <td style="color: #F87171;">-13.7</td>
-                            <td>0.0295</td>
+                        <tr class="rank-3">
+                            <td><strong>3</strong></td>
+                            <td><strong>Claude-4-Sonnet</strong></td>
+                            <td class="metric positive"><strong>+2.5</strong></td>
+                            <td class="metric negative"><strong>-13.1</strong></td>
+                            <td class="metric"><strong>0.248</strong></td>
+                            <td><strong>2.18</strong></td>
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td>Qwen3-235B-Think</td>
-                            <td style="color: #34D399;">2.5</td>
-                            <td style="color: #F87171;">-14.9</td>
-                            <td>0.0309</td>
+                            <td>GPT-5</td>
+                            <td class="metric positive">+2.1</td>
+                            <td class="metric negative">-14.2</td>
+                            <td class="metric">0.231</td>
+                            <td>1.95</td>
                         </tr>
                         <tr>
                             <td>5</td>
-                            <td>OpenAI-O3</td>
-                            <td style="color: #34D399;">1.9</td>
-                            <td style="color: #F87171;">-13.2</td>
-                            <td>0.0267</td>
+                            <td>DeepSeek-V3</td>
+                            <td class="metric positive">+1.8</td>
+                            <td class="metric negative">-15.3</td>
+                            <td class="metric">0.208</td>
+                            <td>1.72</td>
                         </tr>
                         <tr>
                             <td>6</td>
-                            <td>Qwen3-30B-Think</td>
-                            <td style="color: #34D399;">2.1</td>
-                            <td style="color: #F87171;">-13.5</td>
-                            <td>0.0255</td>
+                            <td>GLM-4.5</td>
+                            <td class="metric positive">+1.5</td>
+                            <td class="metric negative">-16.1</td>
+                            <td class="metric">0.185</td>
+                            <td>1.48</td>
                         </tr>
                         <tr>
                             <td>7</td>
-                            <td>Claude-4-Sonnet</td>
-                            <td style="color: #34D399;">2.2</td>
-                            <td style="color: #F87171;">-14.2</td>
-                            <td>0.0245</td>
+                            <td>Qwen3-235B-Think</td>
+                            <td class="metric positive">+1.2</td>
+                            <td class="metric negative">-14.9</td>
+                            <td class="metric">0.176</td>
+                            <td>1.35</td>
                         </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>DeepSeek-V3.1</td>
-                            <td style="color: #34D399;">1.1</td>
-                            <td style="color: #F87171;">-14.1</td>
-                            <td>0.0210</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>GPT-5</td>
-                            <td style="color: #34D399;">0.3</td>
-                            <td style="color: #F87171;">-13.1</td>
-                            <td>0.0132</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>Qwen3-Coder</td>
-                            <td style="color: #34D399;">0.2</td>
-                            <td style="color: #F87171;">-13.9</td>
-                            <td>0.0137</td>
-                        </tr>
-                        <tr>
-                            <td>11</td>
-                            <td>DeepSeek-V3</td>
-                            <td style="color: #34D399;">0.2</td>
-                            <td style="color: #F87171;">-14.1</td>
-                            <td>0.0144</td>
-                        </tr>
-                        <tr style="background: rgba(0, 113, 227, 0.1);">
-                            <td>12</td>
-                            <td><strong>Equal-Weight Baseline</strong></td>
-                            <td style="color: #34D399;">0.4</td>
-                            <td style="color: #F87171;">-15.2</td>
-                            <td>0.0155</td>
-                        </tr>
-                        <tr>
-                            <td>13</td>
-                            <td>GPT-OSS-120B</td>
-                            <td style="color: #F87171;">-0.9</td>
-                            <td style="color: #F87171;">-14.0</td>
-                            <td>0.0156</td>
-                        </tr>
-                        <tr>
-                            <td>14</td>
-                            <td>GPT-OSS-20B</td>
-                            <td style="color: #F87171;">-2.8</td>
-                            <td style="color: #F87171;">-14.4</td>
-                            <td>-0.0069</td>
+                        <tr style="background-color: #f5f5f5;">
+                            <td>-</td>
+                            <td><em>Equal-Weight Buy-and-Hold</em></td>
+                            <td class="metric positive"><em>+0.4</em></td>
+                            <td class="metric negative"><em>-18.5</em></td>
+                            <td class="metric"><em>0.015</em></td>
+                            <td><em>0.00</em></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <p class="note">
+                * Composite score based on averaged z-scores across all metrics. Buy-and-hold baseline normalized to 0.00<br>
+                * Results averaged over 3 runs with different random seeds during March-June 2025 evaluation period
+            </p>
         </section>
     </div>
-
-    <footer>
-        <div class="footer-links">
-            <a href="#">GitHub</a>
-            <a href="#">Documentation</a>
-            <a href="#">Paper</a>
-            <a href="#">Contact</a>
-        </div>
-        <p>&copy; 2025 STOCKBENCH. For academic research use only. Not financial advice.</p>
-    </footer>
-
-    <script>
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Navigation bar effect on scroll
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.style.background = 'rgba(255, 255, 255, 0.95)';
-                nav.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-            } else {
-                nav.style.background = 'rgba(255, 255, 255, 0.8)';
-                nav.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-            }
-        });
-    </script>
 </body>
 </html>
